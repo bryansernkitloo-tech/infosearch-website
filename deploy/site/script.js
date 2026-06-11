@@ -2,6 +2,18 @@
 (function () {
   'use strict';
 
+  // Email links assembled at runtime — immune to proxy obfuscation & spam harvesters
+  (function () {
+    var addr = ['info', 'info-search.com.my'].join('@');
+    var links = document.querySelectorAll('a.js-email');
+    for (var i = 0; i < links.length; i++) {
+      var a = links[i];
+      var subject = a.getAttribute('data-subject');
+      a.setAttribute('href', 'mailto:' + addr + (subject ? '?subject=' + subject : ''));
+      if (a.classList.contains('js-email-text')) a.textContent = addr;
+    }
+  })();
+
   // Sticky header shadow
   var header = document.querySelector('.site-header');
   var onScroll = function () {
