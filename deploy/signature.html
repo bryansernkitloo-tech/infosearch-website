@@ -131,6 +131,8 @@
   var LOGO = 'https://infosearch-website.vercel.app/assets/logo-coloured-hq.png';
   var ACCENT = 'https://infosearch-website.vercel.app/assets/accent.png';
   var SITE = 'https://www.info-search.com.my';
+  var WAICON = 'https://infosearch-website.vercel.app/assets/whatsapp.png';
+  function waRow(icon){ return '<tr><td style="padding:2px 0 14px 0;"><a href="https://wa.me/60125683283" style="text-decoration:none;border:0;"><img src="'+(icon||WAICON)+'" width="26" height="26" alt="WhatsApp — chat with us" style="display:block;border:0;outline:none;"></a></td></tr>'; }
   var DISC = 'This email and any attachments are confidential and intended only for the named recipient(s), and may contain personal data protected under the Personal Data Protection Act 2010. If you received this in error, please notify us and delete it. We accept no liability for viruses or errors in transmission, and this email does not create any binding agreement or obligation on us unless set out in a separately signed document.';
 
   var L = { card:'#FFFFFF', border:'#E6E2D8', name:'#13283F', gold:'#B3893B', body:'#18293B', reg:'#7A8492', rule:'#E2E5EA', disc:'#94A0AE', framed:true };
@@ -138,8 +140,7 @@
 
   function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
-  function sigHTML(c, name, title, withDisc, useClasses, accent) {
-    accent = accent || ACCENT;
+  function sigHTML(c, name, title, withDisc, useClasses, preview) {
     function cls(n){ return useClasses ? ' class="'+n+'"' : ''; }
     var row = function(label, value){
       return '<tr><td'+cls('ic-body')+' style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:'+c.body+';line-height:1.6;padding:0 0 3px 0;"><span'+cls('ic-gold')+' style="color:'+c.gold+';font-weight:bold;">'+label+'&nbsp;&nbsp;</span>'+value+'</td></tr>';
@@ -147,7 +148,7 @@
     var email = '<a href="mailto:info@info-search.com.my"'+cls('ic-link')+' style="color:'+c.body+';text-decoration:none;">info@info-search.com.my</a>';
     var web = '<a href="https://www.info-search.com.my"'+cls('ic-link')+' style="color:'+c.body+';text-decoration:none;">www.info-search.com.my</a>';
     var contacts =
-      row('T', '+603-7805 1810 / 1757 &nbsp;&middot;&nbsp; +603-7495 5316') +
+      row('T', '<a href="https://wa.me/60125683283"'+cls('ic-link')+' style="color:'+c.body+';text-decoration:none;">+603-7805 1810</a> / 1757 &nbsp;&middot;&nbsp; +603-7495 5316') +
       row('E', email) +
       row('W', web) +
       '<tr><td'+cls('ic-body')+' style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:'+c.body+';line-height:1.6;padding:0 0 12px 0;"><span'+cls('ic-gold')+' style="color:'+c.gold+';font-weight:bold;">A&nbsp;&nbsp;</span>42B, Jalan SS 6/8, Kelana Jaya, 47301 Petaling Jaya, Selangor</td></tr>';
@@ -205,10 +206,10 @@
   function render() {
     var name = document.getElementById('f-name').value.trim() || 'Your Name';
     var title = document.getElementById('f-title').value.trim() || 'Chartered Secretary';
-    document.getElementById('light-a').innerHTML = sigHTML(L, name, title, true, false, 'assets/accent.png');
-    document.getElementById('dark-a').innerHTML  = sigHTML(D, name, title, true, false, 'assets/accent.png');
-    document.getElementById('light-b').innerHTML = sigHTML(L, name, title, false, false, 'assets/accent.png');
-    document.getElementById('dark-b').innerHTML  = sigHTML(D, name, title, false, false, 'assets/accent.png');
+    document.getElementById('light-a').innerHTML = sigHTML(L, name, title, true, false, true);
+    document.getElementById('dark-a').innerHTML  = sigHTML(D, name, title, true, false, true);
+    document.getElementById('light-b').innerHTML = sigHTML(L, name, title, false, false, true);
+    document.getElementById('dark-b').innerHTML  = sigHTML(D, name, title, false, false, true);
     document.getElementById('raw-a').value = adaptiveHTML(name, title, true);
     document.getElementById('raw-b').value = adaptiveHTML(name, title, false);
   }
