@@ -225,8 +225,8 @@
     document.getElementById('dark-a').innerHTML  = sigHTML(D, name, title, true, false, true);
     document.getElementById('light-b').innerHTML = sigHTML(L, name, title, false, false, true);
     document.getElementById('dark-b').innerHTML  = sigHTML(D, name, title, false, false, true);
-    document.getElementById('raw-a').value = adaptiveHTML(name, title, true);
-    document.getElementById('raw-b').value = adaptiveHTML(name, title, false);
+    document.getElementById('raw-a').value = sigHTML(L, name, title, true, false, false);
+    document.getElementById('raw-b').value = sigHTML(L, name, title, false, false, false);
   }
   document.getElementById('f-name').addEventListener('input', render);
   document.getElementById('f-title').addEventListener('input', render);
