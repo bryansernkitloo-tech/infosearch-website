@@ -145,13 +145,28 @@
     var row = function(label, value){
       return '<tr><td'+cls('ic-body')+' style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:'+c.body+';line-height:1.6;padding:0 0 3px 0;"><span'+cls('ic-gold')+' style="color:'+c.gold+';font-weight:bold;">'+label+'&nbsp;&nbsp;</span>'+value+'</td></tr>';
     };
-    var email = '<a href="mailto:info@info-search.com.my"'+cls('ic-link')+' style="color:'+c.body+';text-decoration:none;"><span style="text-decoration:none;">info@info-search.com.my</span></a>';
-    var web = '<a href="https://www.info-search.com.my"'+cls('ic-link')+' style="color:'+c.body+';text-decoration:none;"><span style="text-decoration:none;">www.info-search.com.my</span></a>';
+    var WALINK = 'https://wa.me/60125683283';
+    var MAPLINK = 'https://www.google.com/maps/place/Infosearch+Consultancy+PLT/@3.1053459,101.5957803,17z/data=!3m1!4b1!4m6!3m5!1s0x31cc4c198636da4d:0x8b3fc210fb7812d2!8m2!3d3.1053459!4d101.5983552!16s%2Fg%2F1pzplsj_0';
+    // Two-column rows: fixed 20px gold-letter cell + value cell, so all values align vertically.
+    var crow = function(letter, href, value, pb){
+      var lab = href
+        ? '<a href="'+href+'"'+cls('ic-gold')+' style="color:'+c.gold+';font-weight:bold;text-decoration:none;"><span style="text-decoration:none;">'+letter+'</span></a>'
+        : '<span'+cls('ic-gold')+' style="color:'+c.gold+';font-weight:bold;">'+letter+'</span>';
+      var val = href
+        ? '<a href="'+href+'"'+cls('ic-link')+' style="color:'+c.body+';text-decoration:none;"><span style="text-decoration:none;">'+value+'</span></a>'
+        : value;
+      return '<tr>' +
+        '<td valign="top" width="20"'+cls('ic-gold')+' style="font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.6;color:'+c.gold+';font-weight:bold;padding:0 8px '+pb+'px 0;">'+lab+'</td>' +
+        '<td valign="top"'+cls('ic-body')+' style="font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.6;color:'+c.body+';padding:0 0 '+pb+'px 0;">'+val+'</td>' +
+        '</tr>';
+    };
     var contacts =
-      '<tr><td'+cls('ic-body')+' style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:'+c.body+';line-height:1.6;padding:0 0 3px 0;"><a href="https://wa.me/60125683283"'+cls('ic-gold')+' style="color:'+c.gold+';font-weight:bold;text-decoration:none;"><span style="text-decoration:none;">T&nbsp;&nbsp;</span></a><a href="https://wa.me/60125683283"'+cls('ic-link')+' style="color:'+c.body+';text-decoration:none;"><span style="text-decoration:none;">+603-7805 1810 / 1757</span></a></td></tr>' +
-      row('E', email) +
-      row('W', web) +
-      '<tr><td'+cls('ic-body')+' style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:'+c.body+';line-height:1.6;padding:0 0 12px 0;"><a href="https://www.google.com/maps/place/Infosearch+Consultancy+PLT/@3.1053459,101.5957803,17z/data=!3m1!4b1!4m6!3m5!1s0x31cc4c198636da4d:0x8b3fc210fb7812d2!8m2!3d3.1053459!4d101.5983552!16s%2Fg%2F1pzplsj_0"'+cls('ic-gold')+' style="color:'+c.gold+';font-weight:bold;text-decoration:none;"><span style="text-decoration:none;">A&nbsp;&nbsp;</span></a><a href="https://www.google.com/maps/place/Infosearch+Consultancy+PLT/@3.1053459,101.5957803,17z/data=!3m1!4b1!4m6!3m5!1s0x31cc4c198636da4d:0x8b3fc210fb7812d2!8m2!3d3.1053459!4d101.5983552!16s%2Fg%2F1pzplsj_0"'+cls('ic-link')+' style="color:'+c.body+';text-decoration:none;"><span style="text-decoration:none;">42B, Jalan SS 6/8, Kelana Jaya, 47301 Petaling Jaya, Selangor</span></a></td></tr>';
+      '<tr><td colspan="2" style="padding:0;"><table cellpadding="0" cellspacing="0" border="0" role="presentation" style="border-collapse:collapse;">' +
+        crow('T', WALINK, '+603-7805 1810 / 1757', 3) +
+        crow('E', 'mailto:info@info-search.com.my', 'info@info-search.com.my', 3) +
+        crow('W', SITE, 'www.info-search.com.my', 3) +
+        crow('A', MAPLINK, '42B, Jalan SS 6/8, Kelana Jaya, 47301 Petaling Jaya, Selangor', 12) +
+      '</table></td></tr>';
 
     var disclaimer = !withDisc ? '' :
       '<tr><td style="padding:0;"><table cellpadding="0" cellspacing="0" border="0" role="presentation" style="border-collapse:collapse;width:100%;"><tr>' +
