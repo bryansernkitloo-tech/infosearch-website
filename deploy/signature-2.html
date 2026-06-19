@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"></meta>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+<title>Infosearch — Email Signature Generator</title>
+<style>
+  :root { --navy:#13283F; --navy-lift:#1C3A5A; --gold:#B3893B; --paper:#F4F1EA; --line:#E2E5EA; --ink:#18293B; --sub:#5A6677; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #EEF0F3; font-family: Arial, Helvetica, sans-serif; color: var(--ink); }
+  .topbar { background: var(--navy); color: #fff; padding: 18px 24px; display: flex; align-items: center; gap: 14px; }
+  .topbar img { height: 26px; width: auto; display: block; }
+  .topbar span { font-size: 14px; color: rgba(255,255,255,.7); }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 30px 24px 80px; }
+  h1 { font-size: 24px; margin: 0 0 6px; color: var(--navy); }
+  .lede { font-size: 14.5px; color: var(--sub); line-height: 1.6; margin: 0 0 26px; max-width: 680px; }
+
+  .grid { display: grid; grid-template-columns: 320px 1fr; gap: 26px; align-items: start; }
+  .card { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 22px 22px 24px; }
+  .card h2 { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--gold); margin: 0 0 16px; }
+  label { display: block; font-size: 12.5px; font-weight: 700; color: var(--ink); margin: 0 0 6px; }
+  .field { margin-bottom: 18px; }
+  input[type=text] { width: 100%; font-family: Arial, sans-serif; font-size: 15px; padding: 12px 14px; border: 1.5px solid var(--line); border-radius: 8px; color: var(--ink); }
+  input[type=text]:focus { outline: none; border-color: var(--gold); }
+  .hint { font-size: 12px; color: var(--sub); margin-top: 5px; line-height: 1.5; }
+
+  .step-list { font-size: 13px; color: var(--sub); line-height: 1.65; margin: 4px 0 0; padding-left: 18px; }
+  .step-list b { color: var(--ink); }
+
+  .preview-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .preview-head .tag { font-size: 12.5px; font-weight: 700; color: var(--navy); }
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px; }
+  .panel { border-radius: 10px; overflow: hidden; border: 1px solid var(--line); }
+  .panel-cap { font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; padding: 9px 14px; }
+  .cap-light { background: #EDEFF2; color: #5A6677; }
+  .cap-dark { background: #0B0E12; color: #8A95A1; }
+  .render { padding: 22px 20px; }
+  .render-light { background: #fff; }
+  .render-dark { background: #14171C; }
+
+  .btnrow { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-bottom: 8px; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; background: var(--navy); color: #fff; font-size: 14px; font-weight: 700; padding: 13px 22px; border-radius: 8px; cursor: pointer; border: none; font-family: Arial, sans-serif; }
+  .btn:hover { background: var(--navy-lift); }
+  .btn.alt { background: #fff; color: var(--navy); border: 1.5px solid var(--line); }
+  .btn.alt:hover { border-color: var(--gold); }
+  .ok { font-size: 13px; color: #1F8A5B; font-weight: 700; display: none; }
+  .block { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 22px; margin-bottom: 20px; }
+  .block-title { font-size: 14px; font-weight: 700; color: var(--navy); margin: 0 0 3px; }
+  .block-sub { font-size: 12.5px; color: var(--sub); margin: 0 0 16px; }
+  .hidden { position: absolute; left: -9999px; top: 0; }
+  details summary { cursor: pointer; font-size: 12.5px; color: var(--sub); margin-top: 12px; }
+  details textarea { width: 100%; height: 150px; margin-top: 8px; font-family: ui-monospace, Menlo, monospace; font-size: 10.5px; border: 1px solid var(--line); border-radius: 8px; padding: 10px; box-sizing: border-box; }
+  @media (max-width: 800px) { .grid { grid-template-columns: 1fr; } .pair { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="topbar">
+  <img src="https://infosearch-website.vercel.app/assets/logo-white.png" alt="Infosearch Consultancy PLT">
+  <span>Email Signature Generator</span>
+</div>
+
+<div class="wrap">
+  <h1>Create your email signature</h1>
+  <p class="lede">Type your name (and title if different), then copy your personalised signature straight into Outlook. Two versions are generated: one with the confidentiality disclaimer for new emails, one without for replies.</p>
+
+  <div class="grid">
+    <!-- LEFT: inputs -->
+    <div>
+      <div class="card">
+        <h2>Your details</h2>
+        <div class="field">
+          <label for="f-name">Full name</label>
+          <input type="text" id="f-name" value="Bryan Loo" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="f-title">Job title</label>
+          <input type="text" id="f-title" value="Chartered Secretary" autocomplete="off">
+          <div class="hint">Defaults to “Chartered Secretary” — change only if yours differs.</div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:18px;">
+        <h2>How to install (Outlook)</h2>
+        <ol class="step-list">
+          <li>Click <b>Copy — New emails</b> below.</li>
+          <li>Outlook: <b>File → Options → Mail → Signatures</b>.</li>
+          <li><b>New</b>, name it, paste into the box.</li>
+          <li>Repeat with <b>Copy — Replies</b> as a second signature.</li>
+          <li>Set <b>New messages</b> → the disclaimer one; <b>Replies/forwards</b> → the reply one.</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- RIGHT: previews + copy -->
+    <div>
+      <!-- Version A -->
+      <div class="block">
+        <div class="block-title">Version A — New emails (with disclaimer)</div>
+        <div class="block-sub">Use as your “New messages” signature.</div>
+        <div class="pair">
+          <div class="panel"><div class="panel-cap cap-light">Light mode</div><div class="render render-light" id="light-a"></div></div>
+          <div class="panel"><div class="panel-cap cap-dark">Dark mode</div><div class="render render-dark" id="dark-a"></div></div>
+        </div>
+        <div class="btnrow">
+          <button class="btn" onclick="copySig('copy-a','ok-a')">Copy — New emails</button>
+          <span class="ok" id="ok-a">✓ Copied!</span>
+        </div>
+        <details><summary>Show raw HTML</summary><textarea id="raw-a" readonly></textarea></details>
+        <div class="hidden" id="copy-a"></div>
+      </div>
+
+      <!-- Version B -->
+      <div class="block">
+        <div class="block-title">Version B — Replies &amp; forwards (signature only)</div>
+        <div class="block-sub">Use as your “Replies/forwards” signature.</div>
+        <div class="pair">
+          <div class="panel"><div class="panel-cap cap-light">Light mode</div><div class="render render-light" id="light-b"></div></div>
+          <div class="panel"><div class="panel-cap cap-dark">Dark mode</div><div class="render render-dark" id="dark-b"></div></div>
+        </div>
+        <div class="btnrow">
+          <button class="btn alt" onclick="copySig('copy-b','ok-b')">Copy — Replies</button>
+          <span class="ok" id="ok-b">✓ Copied!</span>
+        </div>
+        <details><summary>Show raw HTML</summary><textarea id="raw-b" readonly></textarea></details>
+        <div class="hidden" id="copy-b"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  var LOGO = 'https://infosearch-website.vercel.app/assets/logo-coloured-hq.png';
+  var ACCENT = 'https://infosearch-website.vercel.app/assets/accent.png';
+  var SITE = 'https://www.info-search.com.my';
+  var DISC = 'This email and any attachments are confidential and intended only for the named recipient(s), and may contain personal data protected under the Personal Data Protection Act 2010. If you received this in error, please notify us and delete it. We accept no liability for viruses or errors in transmission, and this email does not create any binding agreement or obligation on us unless set out in a separately signed document.';
+
+  var L = { card:'#FFFFFF', border:'#E6E2D8', name:'#13283F', gold:'#B3893B', body:'#18293B', reg:'#7A8492', rule:'#E2E5EA', disc:'#94A0AE', framed:true };
+  var D = { card:'#14202E', border:'#2C3A47', name:'#FFFFFF', gold:'#C9A45C', body:'#D7DCE2', reg:'#8A95A1', rule:'#2C3A47', disc:'#9CA7B3', framed:true };
+
+  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  function sigHTML(c, name, title, withDisc, useClasses, accent) {
+    accent = accent || ACCENT;
+    function cls(n){ return useClasses ? ' class="'+n+'"' : ''; }
+    var row = function(label, value){
+      return '<tr><td'+cls('ic-body')+' style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:'+c.body+';line-height:1.6;padding:0 0 3px 0;"><span'+cls('ic-gold')+' style="color:'+c.gold+';font-weight:bold;">'+label+'&nbsp;&nbsp;</span>'+value+'</td></tr>';
+    };
+    var email = '<a href="mailto:info@info-search.com.my"'+cls('ic-link')+' style="color:'+c.body+';text-decoration:none;">info@info-search.com.my</a>';
+    var web = '<a href="https://www.info-search.com.my"'+cls('ic-link')+' style="color:'+c.body+';text-decoration:none;">www.info-search.com.my</a>';
+    var contacts =
+      row('T', '+603-7805 1810 / 1757 &nbsp;&middot;&nbsp; +603-7495 5316') +
+      row('E', email) +
+      row('W', web) +
+      '<tr><td'+cls('ic-body')+' style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:'+c.body+';line-height:1.6;padding:0 0 12px 0;"><span'+cls('ic-gold')+' style="color:'+c.gold+';font-weight:bold;">A&nbsp;&nbsp;</span>42B, Jalan SS 6/8, Kelana Jaya, 47301 Petaling Jaya, Selangor</td></tr>';
+
+    var disclaimer = !withDisc ? '' :
+      '<tr><td style="padding:0;"><table cellpadding="0" cellspacing="0" border="0" role="presentation" style="border-collapse:collapse;width:100%;"><tr>' +
+        '<td width="3" bgcolor="'+c.gold+'" style="background:'+c.gold+';width:3px;font-size:0;line-height:0;border-radius:2px;">&nbsp;</td>' +
+        '<td'+cls('ic-disc')+' style="padding:0 0 0 12px;font-family:Arial,Helvetica,sans-serif;font-size:10.5px;line-height:1.6;color:'+c.disc+';">' +
+          '<span'+cls('ic-gold')+' style="color:'+c.gold+';font-weight:bold;letter-spacing:.06em;">CONFIDENTIAL</span>&nbsp; '+DISC +
+        '</td></tr></table></td></tr>';
+
+    var tdStyle = c.framed
+      ? 'background:'+c.card+';border:1px solid '+c.border+';border-bottom:3px solid #B3893B;border-radius:10px;padding:22px 26px 20px 24px;'
+      : 'padding:0;';
+    var outerBg = c.framed ? ' bgcolor="'+c.card+'"' : '';
+    var tdBg = c.framed ? ' bgcolor="'+c.card+'"' : '';
+
+    return (
+'<table cellpadding="0" cellspacing="0" border="0" role="presentation"'+outerBg+cls('ic-card')+' style="border-collapse:collapse;'+(c.framed?'background:'+c.card+';border-radius:10px;':'')+'">' +
+'<tr><td'+tdBg+cls('ic-cardtd')+' style="'+tdStyle+'">' +
+'<table cellpadding="0" cellspacing="0" border="0" role="presentation" style="border-collapse:collapse;font-family:Arial,Helvetica,sans-serif;width:100%;max-width:520px;">' +
+  '<tr><td style="padding:0 0 12px 0;"><table cellpadding="0" cellspacing="0" border="0" role="presentation" style="border-collapse:collapse;"><tr><td'+cls('ic-name')+' style="font-family:Arial,Helvetica,sans-serif;font-size:22px;font-weight:bold;color:'+c.name+';letter-spacing:-0.2px;padding:0 0 8px 0;border-bottom:3px solid '+c.gold+';">'+esc(name)+'</td></tr></table></td></tr>' +
+  '<tr><td'+cls('ic-gold')+' style="font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:bold;letter-spacing:1.6px;text-transform:uppercase;color:'+c.gold+';padding:0 0 14px 0;">'+esc(title)+'</td></tr>' +
+  '<tr><td style="padding:0 0 14px 0;"><a href="'+SITE+'" style="text-decoration:none;border:0;"><img src="'+LOGO+'" alt="Infosearch Consultancy PLT" width="138" height="29" style="display:block;border:0;outline:none;text-decoration:none;width:138px;height:29px;"></a></td></tr>' +
+  contacts +
+  '<tr><td'+cls('ic-reg')+' style="font-family:Arial,Helvetica,sans-serif;font-size:11px;color:'+c.reg+';line-height:1.5;border-top:1px solid '+c.rule+';padding:11px 0 '+(withDisc?'13':'0')+'px 0;">Infosearch Consultancy PLT &nbsp;&middot;&nbsp; <span style="white-space:nowrap;">201404001540 (LLP0002962-LGN)</span></td></tr>' +
+  disclaimer +
+'</table></td></tr></table>'
+    );
+  }
+
+  function adaptiveHTML(name, title, withDisc) {
+    var style =
+'<style type="text/css">\n' +
+'@media (prefers-color-scheme: dark){\n' +
+' .ic-card,.ic-cardtd{background:#14202E !important;}\n' +
+' .ic-cardtd{border-color:#2C3A47 !important;}\n' +
+' .ic-name{color:#FFFFFF !important;}\n' +
+' .ic-body,.ic-link{color:#D7DCE2 !important;}\n' +
+' .ic-gold{color:#C9A45C !important;}\n' +
+' .ic-reg{color:#8A95A1 !important;border-top-color:#2C3A47 !important;}\n' +
+' .ic-disc{color:#9CA7B3 !important;}\n' +
+'}\n' +
+'[data-ogsc] .ic-card,[data-ogsb] .ic-card,[data-ogsc] .ic-cardtd,[data-ogsb] .ic-cardtd{background:#14202E !important;}\n' +
+'[data-ogsc] .ic-cardtd{border-color:#2C3A47 !important;}\n' +
+'[data-ogsc] .ic-name{color:#FFFFFF !important;}\n' +
+'[data-ogsc] .ic-body,[data-ogsc] .ic-link{color:#D7DCE2 !important;}\n' +
+'[data-ogsc] .ic-gold{color:#C9A45C !important;}\n' +
+'[data-ogsc] .ic-reg{color:#8A95A1 !important;}\n' +
+'[data-ogsc] .ic-disc{color:#9CA7B3 !important;}\n' +
+'</style>\n';
+    return style + sigHTML(L, name, title, withDisc, true);
+  }
+
+  function render() {
+    var name = document.getElementById('f-name').value.trim() || 'Your Name';
+    var title = document.getElementById('f-title').value.trim() || 'Chartered Secretary';
+    document.getElementById('light-a').innerHTML = sigHTML(L, name, title, true, false, 'assets/accent.png');
+    document.getElementById('dark-a').innerHTML  = sigHTML(D, name, title, true, false, 'assets/accent.png');
+    document.getElementById('light-b').innerHTML = sigHTML(L, name, title, false, false, 'assets/accent.png');
+    document.getElementById('dark-b').innerHTML  = sigHTML(D, name, title, false, false, 'assets/accent.png');
+    document.getElementById('raw-a').value = adaptiveHTML(name, title, true);
+    document.getElementById('raw-b').value = adaptiveHTML(name, title, false);
+  }
+  document.getElementById('f-name').addEventListener('input', render);
+  document.getElementById('f-title').addEventListener('input', render);
+  render();
+
+  function copySig(srcId, okId) {
+    var rawId = srcId === 'copy-a' ? 'raw-a' : 'raw-b';
+    var node = document.getElementById(srcId);
+    node.innerHTML = document.getElementById(rawId).value;
+    var range = document.createRange();
+    range.selectNodeContents(node);
+    var sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+    try {
+      document.execCommand('copy');
+      var ok = document.getElementById(okId);
+      ok.style.display = 'inline';
+      setTimeout(function(){ ok.style.display = 'none'; }, 4000);
+    } catch (e) {
+      alert('Press Ctrl+C (or Cmd+C) to copy.');
+    }
+    sel.removeAllRanges();
+  }
+</script>
+</body>
+</html>
